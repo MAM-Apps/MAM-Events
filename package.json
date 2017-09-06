@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Crowdsourced news. From the ground. In real time.",
   "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon ./src/index.js"  
+  },
   "directories": {
     "test": "tests"
   },
@@ -35,6 +38,7 @@
     "eslint": "^4.6.1",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0"
+  },
 
   "scripts": {
 
