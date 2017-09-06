@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
-    
+
     "body-parser": "^1.17.2",
     "env2": "^2.2.0",
     "eslint": "^4.6.1",
@@ -23,9 +23,11 @@
   },
   "devDependencies": {},
   "scripts": {
+
     "test": "tape tests/*.test.js | tap-spec",
     "start": "node src/index.js",
     "devStart": "nodemon src/index.js"
+
   },
   "repository": {
     "type": "git",
