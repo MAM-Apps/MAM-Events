@@ -6,10 +6,15 @@
   "directories": {
     "test": "tests"
   },
+  "scripts": {
+    "test": "tape tests/*.test.js | tap-spec",
+    "start": "node ./src/index.js",
+    "devstart": "nodemon ./src/index.js",
+    "coverage": "istanbul cover ./tests/src.test.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "env2": "^2.2.0",
-    "eslint": "^4.6.1",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
     "istanbul": "^0.4.5",
@@ -21,9 +26,10 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0"
   },
   "repository": {
     "type": "git",
