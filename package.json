@@ -23,7 +23,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "node tests/tests.js | tap-spec",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "devStart": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
