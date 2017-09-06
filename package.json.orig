@@ -6,23 +6,14 @@
   "directories": {
     "test": "tests"
   },
-  "scripts": {
-    "test": "tape tests/*.test.js | tap-spec",
-    "start": "node ./src/index.js",
-    "devstart": "nodemon ./src/index.js",
-    "coverage": "istanbul cover ./tests/src.test.js"
-  },
   "dependencies": {
-
+    
     "body-parser": "^1.17.2",
     "env2": "^2.2.0",
+    "eslint": "^4.6.1",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
     "istanbul": "^0.4.5",
-
-    "mongodb": "^2.2.31",
-    "mongoose": "^4.11.10",
-
     "node": "^8.3.0",
     "nodemon": "^1.12.0",
     "serve-favicon": "^2.4.3",
@@ -30,18 +21,11 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
   },
-
-  "devDependencies": {
-    "eslint": "^4.6.1",
-    "eslint-config-airbnb-base": "^12.0.0",
-    "eslint-plugin-import": "^2.7.0"
-
+  "devDependencies": {},
   "scripts": {
-
     "test": "tape tests/*.test.js | tap-spec",
     "start": "node src/index.js",
     "devStart": "nodemon src/index.js"
-  
   },
   "repository": {
     "type": "git",
