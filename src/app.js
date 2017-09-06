@@ -6,7 +6,7 @@ const controllers = require('./controllers/index');
 const helpers = require('./controllers/helpers');
 const app = express();
 
-//set up view engine
+// View Engine
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -17,8 +17,8 @@ app.engine(
     layoutsDir: path.join(__dirname, 'views', 'layouts'),
     partialsDir: path.join(__dirname, 'views', 'partials'),
     defaultLayout: 'main',
-    helpers: helpers
-  })
+    helpers,
+  }),
 );
 
 //
