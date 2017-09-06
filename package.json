@@ -1,0 +1,37 @@
+{
+  "name": "twitter-mapp",
+  "version": "1.0.0",
+  "description": "Crowdsourced news. From the ground. In real time.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "env2": "^2.2.0",
+    "eslint": "^4.6.1",
+    "express": "^4.15.4",
+    "express-handlebars": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "node": "^8.3.0",
+    "nodemon": "^1.12.0",
+    "serve-favicon": "^2.4.3",
+    "supertest": "^3.0.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twitter-first-response/twitter-mapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/twitter-first-response/twitter-mapp/issues"
+  },
+  "homepage": "https://github.com/twitter-first-response/twitter-mapp#readme"
+}
