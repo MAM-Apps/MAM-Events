@@ -1,5 +1,5 @@
 const request = require('request');
-const get = () => {
+exports.get = (cb) => {
   const options = {
     url: "https://api.twitter.com/1.1/trends/place.json?id=1",
     headers: {
@@ -9,11 +9,11 @@ const get = () => {
   }
   request.get(options, (err, response, body) => {
     if (err) {
-      console.log(err);
+      cb(err);
     }else {
-      console.log(body);
+      const parsedBody = JSON.parse(body);
+    cb(null, parsedBody);
     }
   })
 
 }
-get();
