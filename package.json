@@ -7,7 +7,7 @@
     "test": "tape tests/*.test.js | tap-spec",
     "start": "node src/index.js",
     "devStart": "nodemon src/index.js",
-    "coverage": "istanbul cover ./tests/src.test.js"		
+    "coverage": "istanbul cover ./tests/src.test.js"
   },
   "directories": {
     "test": "tests"
@@ -17,6 +17,7 @@
     "env2": "^2.2.0",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
+    "facebook-events-by-location": "^0.8.0",
     "istanbul": "^0.4.5",
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.10",
