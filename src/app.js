@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const exphbs = require('express-handlebars');
-const controllers = require('./controllers/index');
+const controllers = require('./controllers');
 const helpers = require('./controllers/helpers');
 const app = express();
 
