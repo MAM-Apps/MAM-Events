@@ -11,7 +11,7 @@ const home = require('./home');
 const error = require('./error');
 const stream = require('./stream');
 const events = require('./events');
-// Main route
+const newEvent = require('./new-event');
 
 router.get('/events', events.get);
 router.get('/', home.get);

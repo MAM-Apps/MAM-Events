@@ -1,20 +1,19 @@
 require('env2')('./config.env');
+const url = require('url');
 const EventSearch = require("facebook-events-by-location-core");
 
 exports.get = (req, res) => {
   if (!req.query.lat || !req.query.lng) {
     res.status(500).json({
-      message: "Please specify the lat and lng parameters!"
+      message: 'Please specify the lat and lng parameters!'
     });
   } else if (!req.query.accessToken && !process.env.FEBL_ACCESS_TOKEN) {
     res.status(500).json({
-      message: "Please specify an Access Token, either as environment variable or as accessToken parameter!"
+      message: 'Please specify an Access Token, either as environment variable or as accessToken parameter!'
     });
   } else {
+    let options = {};
 
-    var options = {};
-
-    // Add latitude
     if (req.query.lat) {
       options.lat = req.query.lat;
     }
@@ -44,14 +43,31 @@ exports.get = (req, res) => {
     if (req.query.until) {
       options.until = req.query.until;
     }
-    // Instantiate EventSearch
-    var es = new EventSearch();
 
-    // Search and handle results
-    es.search(options).then(function(events) {
-      res.json(events);
-    }).catch(function(error) {
-      res.status(500).json(error);
-    });
+    const es = new EventSearch();
+    es.search(options)
+      .then((events) => {
+        // Hey minesh, look here for latitude, longitude stuff 
+        const eventArray = events.events.map((element) => {
+          let geocode = {
+            lat: element.venue.location.latitude,
+            lng: element.venue.location.longitude,
+          }
+          return geocode;
+        });
+
+        console.log(eventArray);
+        res.render('new-event', {
+          activePage: {
+            home: true,
+          },
+          eventArray: eventArray,
+          apiKey: process.env.MAPS_API_KEY,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json(error);
+        console.log('');
+      });
   }
 };
