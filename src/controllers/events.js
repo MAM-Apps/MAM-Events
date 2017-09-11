@@ -49,10 +49,11 @@ exports.get = (req, res) => {
       .then((events) => {
         // Hey minesh, look here for latitude, longitude stuff
         const eventArray = events.events.map((element) => {
+          console.log(events.events);
           let geocode = {
             lat: element.venue.location.latitude,
             lng: element.venue.location.longitude,
-          }
+          };
           return geocode;
         });
 
@@ -61,7 +62,7 @@ exports.get = (req, res) => {
           activePage: {
             home: true,
           },
-          eventArray: eventArray,
+          eventArray: `var eventArray = ${JSON.stringify(eventArray)};`,
           apiKey: process.env.MAPS_API_KEY,
         });
       })

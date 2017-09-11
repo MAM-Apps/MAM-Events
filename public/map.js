@@ -1,9 +1,7 @@
-// These functions should be in some JS file
-// All the functions for the map:
-//
+var form = document.getElementById('map-form');
 function initMap() {
   // Map options - this is passed to the new google maps as a variable
-  const mapOptions = {
+  var mapOptions = {
     // Zoom goes up to 16 - this it the closest we can zoom
     zoom: 14,
     // Centred at FAC
@@ -13,30 +11,19 @@ function initMap() {
     },
   };
   // Create an array to store all markers so they can be clustered
-  const markClust = [];
+  var markClust = [];
 
 
   // Create new google map and send to DOM
-  const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
   // Create new Market Clusterer object, passing in markCLust array
-  const markerCluster = new MarkerClusterer(
-    map, markClust,
-    { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' },
+  var markerCluster = new MarkerClusterer(
+    map, markClust, {
+      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    },
   );
-
-
-    // Listen for click on map
-  google.maps.event.addListener(map, 'click', (event) => {
-    // Add marker
-    addMarker({
-      coords: event.latLng,
-    });
-  });
-
-
-  // Array of markers for testing to pop up initially on map - To delete
-  const markers = [{
+  var markers = [{
     coords: {
       lat: 51.530881,
       lng: -0.042137,
@@ -60,14 +47,25 @@ function initMap() {
     addMarker(markers[i]);
   }
 
+  // Listen for click on map
+form.addEventListener('submit', function(e) {
+  console.log(eventArray);
+  e.preventDefault();
+  rmvMarker();
+  eventArray.forEach(function(el) {
+    addMarker({
+      coords: el,
+    });
+  });
+})
+
+
   // Add Marker Function
   // This creates the marker. This function will be called by the add marker event listener
   // props is the event properties
   function addMarker(props) {
-    const lat = '';
-    const lng = '';
-    const content = 'placeholder';
-    const marker = new google.maps.Marker({
+    var content = 'placeholder';
+    var marker = new google.maps.Marker({
       // get the event's coordinates (on click)
       position: props.coords,
       // this is a key value pair identifying the map in use
@@ -86,7 +84,7 @@ function initMap() {
     markClust.push(marker);
     // Check content
     if (props.content) {
-      const infoWindow = new google.maps.InfoWindow({
+      var infoWindow = new google.maps.InfoWindow({
         // populate this with event information
 
         content: props.content,
@@ -100,29 +98,22 @@ function initMap() {
     // Not needed for MVP
     google.maps.event.addListener(marker, 'dblclick', (event) => {
       console.log('You just double clicked');
-      rmvMarker(marker);
+
     });
   }
 
   // function to remove marker
-  function rmvMarker(marker) {
-    console.log(marker);
-    console.log(`The index of this marker is ${markClust.indexOf(marker)}`);
-    console.log(markClust);
+  function rmvMarker() {
 
-    const markerIndex = markClust.indexOf(marker);
-    console.log(markerIndex);
-
-    if (markerIndex !== -1) {
-      markClust.splice(markerIndex, 1);
-      console.log(`The array now is: ${markClust}`);
-      console.log(markClust);
-      marker.setMap(null);
-    }
+    markClust.forEach(function(el){
+      console.log(el)
+      el.setMap(null)
+    })
+    markClust=[];
   }
   // Check to see if the bound have changed and to retrieve new bounds
   google.maps.event.addListener(map, 'bounds_changed', () => {
-    const bounds = map.getBounds();
+    var bounds = map.getBounds();
     console.log(bounds);
   });
 }

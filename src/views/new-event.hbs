@@ -1,14 +1,16 @@
 <h1>Twitter Mapp: NEW EVENT</h1>
 
-<form action="/events" method="GET">
+<form action="/events" method="GET" id="map-form">
   Latitude: <input type="text" name="lat" value="51.547623">
   Longitude: <input type="text" name="lng" value="-0.070113">
   Distance: <input type="text" name="distance" value="100">
 <input type="submit" value="SUBMIT">
 </form>
 
+{{> mainmap}}
+
 <div>
-<h2>GEOCODES:</h2> {{#each eventArray}}
+<h2>GEOCODES:</h2> {{#each eventGeocodes}}
  latitude: <span class="lat">{{this.lat}}</span>, longitude: <span class="lng">{{this.lng}}</span>
  <br><br>
  {{/each}}
