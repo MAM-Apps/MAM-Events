@@ -58,13 +58,7 @@ exports.get = (req, res) => {
         });
 
         console.log(eventArray);
-        res.render('new-event', {
-          activePage: {
-            home: true,
-          },
-          eventArray: `var eventArray = ${JSON.stringify(eventArray)};`,
-          apiKey: process.env.MAPS_API_KEY,
-        });
+        res.json(eventArray);
       })
       .catch((error) => {
         res.status(500).json(error);

@@ -49,7 +49,7 @@ function initMap() {
 
   // Listen for click on map
 form.addEventListener('submit', function(e) {
-  console.log(eventArray);
+  // console.log(eventArray);
   e.preventDefault();
   rmvMarker();
   eventArray.forEach(function(el) {
