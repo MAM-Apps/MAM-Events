@@ -57,7 +57,7 @@ exports.get = (req, res) => {
           return geocode;
         });
 
-        console.log(eventArray);
+        console.log('eventArray', eventArray);
         res.json(eventArray);
       })
       .catch((error) => {

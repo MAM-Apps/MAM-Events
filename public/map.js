@@ -1,4 +1,6 @@
+/* eslint-disable */
 var form = document.getElementById('map-form');
+
 function initMap() {
   // Map options - this is passed to the new google maps as a variable
   var mapOptions = {
@@ -24,41 +26,42 @@ function initMap() {
     },
   );
   var markers = [{
-    coords: {
-      lat: 51.530881,
-      lng: -0.042137,
+      coords: {
+        lat: 51.530881,
+        lng: -0.042137,
+      },
+      iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      content: '<h1>Lynn MA</h1>',
     },
-    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-    content: '<h1>Lynn MA</h1>',
-  },
-  {
-    coords: {
-      lat: 51.530881,
-      lng: -0.042137,
+    {
+      coords: {
+        lat: 51.530881,
+        lng: -0.042137,
+      },
+      content: '<h1>Amesbury MA</h1>',
     },
-    content: '<h1>Amesbury MA</h1>',
-  },
 
   ];
 
-    // Loop through markers array and populate on the page
+  // Loop through markers array and populate on the page
   for (let i = 0; i < markers.length; i++) {
     // Add marker
     addMarker(markers[i]);
   }
-
   // Listen for click on map
-form.addEventListener('submit', function(e) {
-  // console.log(eventArray);
-  e.preventDefault();
-  rmvMarker();
-  eventArray.forEach(function(el) {
-    addMarker({
-      coords: el,
-    });
-  });
-})
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    rmvMarker();
+    xhrRequest(function(response) {
+      var eventArray = JSON.parse(response);
+      eventArray.forEach(function(el) {
+        addMarker({
+          coords: el,
+        });
+      });
+    })
 
+  });
 
   // Add Marker Function
   // This creates the marker. This function will be called by the add marker event listener
@@ -105,11 +108,12 @@ form.addEventListener('submit', function(e) {
   // function to remove marker
   function rmvMarker() {
 
-    markClust.forEach(function(el){
+    markClust.forEach(function(el) {
       console.log(el)
       el.setMap(null)
     })
-    markClust=[];
+    markerCluster.clearMarkers();
+    markClust = [];
   }
   // Check to see if the bound have changed and to retrieve new bounds
   google.maps.event.addListener(map, 'bounds_changed', () => {
