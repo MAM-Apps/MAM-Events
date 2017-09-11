@@ -15,7 +15,6 @@ function initMap() {
   // Create an array to store all markers so they can be clustered
   var markClust = [];
 
-
   // Create new google map and send to DOM
   var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
@@ -25,21 +24,22 @@ function initMap() {
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     },
   );
-  var markers = [{
-      coords: {
-        lat: 51.530881,
-        lng: -0.042137,
-      },
-      iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-      content: '<h1>Lynn MA</h1>',
-    },
-    {
-      coords: {
-        lat: 51.530881,
-        lng: -0.042137,
-      },
-      content: '<h1>Amesbury MA</h1>',
-    },
+  var markers = [
+    // {
+    //   coords: {
+    //     lat: 51.530881,
+    //     lng: -0.042137,
+    //   },
+    //   iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+    //   content: '<h1>Lynn MA</h1>',
+    // },
+    // {
+    //   coords: {
+    //     lat: 51.530881,
+    //     lng: -0.042137,
+    //   },
+    //   content: '<h1>Amesbury MA</h1>',
+    // },
 
   ];
 
@@ -52,14 +52,16 @@ function initMap() {
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     rmvMarker();
-    xhrRequest(function(response) {
+    xhrRequest(function(response, centre) {
       var eventArray = JSON.parse(response);
+      map.setZoom(10);
+      map.panTo(centre);
       eventArray.forEach(function(el) {
         addMarker({
           coords: el,
         });
       });
-    })
+    });
 
   });
 
@@ -109,7 +111,6 @@ function initMap() {
   function rmvMarker() {
 
     markClust.forEach(function(el) {
-      console.log(el)
       el.setMap(null)
     })
     markerCluster.clearMarkers();
@@ -118,6 +119,6 @@ function initMap() {
   // Check to see if the bound have changed and to retrieve new bounds
   google.maps.event.addListener(map, 'bounds_changed', () => {
     var bounds = map.getBounds();
-    console.log(bounds);
+    // console.log(bounds);
   });
 }
