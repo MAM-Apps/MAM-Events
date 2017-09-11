@@ -15,10 +15,6 @@ exports.post = (options, callback) => {
     });
   });
 
-  // req.on('error', (err) => {
-  //   res.send(`error: ${err.message}`);
-  // });
-
   req.end();
 
   rest.getJSON(options, (statusCode, result) => {
