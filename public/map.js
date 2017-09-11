@@ -4,7 +4,7 @@ var form = document.getElementById('map-form');
 function initMap() {
   // Map options - this is passed to the new google maps as a variable
   var mapOptions = {
-    // Zoom goes up to 16 - this it the closest we can zoom
+    // Zoom goes up to 16 - this is the closest we can zoom
     zoom: 14,
     // Centred at FAC
     center: {
@@ -24,52 +24,25 @@ function initMap() {
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     },
   );
-  var markers = [
-    // {
-    //   coords: {
-    //     lat: 51.530881,
-    //     lng: -0.042137,
-    //   },
-    //   iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-    //   content: '<h1>Lynn MA</h1>',
-    // },
-    // {
-    //   coords: {
-    //     lat: 51.530881,
-    //     lng: -0.042137,
-    //   },
-    //   content: '<h1>Amesbury MA</h1>',
-    // },
+  var markers = [];
 
-  ];
-
-  // Loop through markers array and populate on the page
-  for (let i = 0; i < markers.length; i++) {
-    // Add marker
-    addMarker(markers[i]);
-  }
-  // Listen for click on map
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     rmvMarker();
-    xhrRequest(function(response, centre) {
-      var eventArray = JSON.parse(response);
+    xhrRequest(function(response) {
+      var responseObject = JSON.parse(response);
       map.setZoom(10);
-      map.panTo(centre);
-      eventArray.forEach(function(el) {
+      map.panTo(responseObject.centre);
+      responseObject.eventArray.forEach(function(el) {
         addMarker({
-          coords: el,
+          coords: el[0],
+          content: el[1],
         });
       });
     });
-
   });
 
-  // Add Marker Function
-  // This creates the marker. This function will be called by the add marker event listener
-  // props is the event properties
   function addMarker(props) {
-    var content = 'placeholder';
     var marker = new google.maps.Marker({
       // get the event's coordinates (on click)
       position: props.coords,

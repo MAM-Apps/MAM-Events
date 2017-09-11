@@ -2,18 +2,17 @@
 var form = document.getElementById('map-form');
 var lat = document.getElementById('lat');
 var lng = document.getElementById('lng');
+var address = document.getElementById('address');
+
 var distance = document.getElementById('distance');
 var xhrRequest = function(cb) {
-  var url = '/events/?' + 'lat=' + lat.value + '&lng=' + lng.value + '&distance=' + distance.value;
+  var url = '/events/?address=' + address.value;
+  // var url = '/events/?' + 'lat=' + lat.value + '&lng=' + lng.value + '&distance=' + distance.value;
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       console.log(xhr.responseText);
-      var latlng = {
-        lat: Number(lat.value),
-        lng: Number(lng.value),
-      }
-      cb(xhr.responseText, latlng);
+      cb(xhr.responseText);
     }
   };
   xhr.open("GET", url, true);
