@@ -47,7 +47,7 @@ exports.get = (req, res) => {
     const es = new EventSearch();
     es.search(options)
       .then((events) => {
-        // Hey minesh, look here for latitude, longitude stuff 
+        // Hey minesh, look here for latitude, longitude stuff
         const eventArray = events.events.map((element) => {
           let geocode = {
             lat: element.venue.location.latitude,
