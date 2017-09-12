@@ -160,7 +160,9 @@ function initMap() {
     // Check to see if the bound have changed and to retrieve new bounds
     google.maps.event.addListener(map, 'bounds_changed', () => {
         var bounds = map.getBounds();
-        // console.log(bounds);
+        console.log(bounds);
+        //map.getCentre()
+        //find displacements
     });
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
