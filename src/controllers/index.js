@@ -9,13 +9,13 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 const home = require('./home');
 const error = require('./error');
-const stream = require('./stream');
+
 const events = require('./events');
 const newEvent = require('./new-event');
 
 router.get('/events', events.get);
 router.get('/', home.get);
-router.post('/stream', stream.post);
+
 router.use(error.client);
 router.use(error.server);
 
