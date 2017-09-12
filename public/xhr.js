@@ -1,22 +1,27 @@
 /* eslint-disable */
-
+var form = document.getElementById('map-form');
 var lat = document.getElementById('lat');
 var lng = document.getElementById('lng');
+var address = document.getElementById('address');
+var until = document.getElementById('until');
+var distance = document.getElementById('distance');
+
 var distance = document.getElementById('distance');
 var xhrRequest = function(cb) {
-    var url = '/events/?' + 'lat=' + lat.value + '&lng=' + lng.value + '&distance=' + distance.value;
-    console.log(url)
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText);
-            var latlng = {
-                lat: Number(lat.value),
-                lng: Number(lng.value),
-            }
-            cb(xhr.responseText, latlng);
-        }
-    };
-    xhr.open("GET", url, true);
-    xhr.send();
+  var dateTime = new Date(until.value).getTime();
+  var timestamp = Math.floor(dateTime / 1000);
+  if (lat.value && lng.value) {
+    var url = '/events/?' + '&input=geo&lat=' + lat.value + '&lng=' + lng.value + '&distance=' + distance.value + '&until=' + timestamp;
+  } else {
+    var url = '/events/?&input=search&address=' + address.value + "&until=" + timestamp + '&distance=' + distance.value;
+  }
+  // console.log(url);
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      cb(xhr.responseText);
+    }
+  };
+  xhr.open("GET", url, true);
+  xhr.send();
 };

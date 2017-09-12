@@ -91,19 +91,26 @@ function initMap() {
 
     // Listen for click on map
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        rmvMarker();
-        xhrRequest(function(response, centre) {
-            var eventArray = JSON.parse(response);
-            map.setZoom(10);
-            map.panTo(centre);
-            eventArray.forEach(function(el) {
-                addMarker({
-                    coords: el,
-                });
-            });
+      e.preventDefault();
+      rmvMarker();
+      xhrRequest(function(response) {
+        var responseObject = JSON.parse(response);
+        // console.log(responseObject);
+        map.setZoom(10);
+        var centre = {
+          lat: Number(responseObject.centre.lat),
+          lng: Number(responseObject.centre.lng),
+        }
+        map.panTo(centre);
+        console.log(responseObject.eventArray[0].geocode);
+        responseObject.eventArray.forEach(function(el) {
+                  // console.log(el.geocode);
+          addMarker({
+            coords: el.geocode,
+            content: el.eventInfo,
+          });
         });
-
+      });
     });
 
     // Add Marker Function
