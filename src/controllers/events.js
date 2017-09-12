@@ -32,6 +32,9 @@ exports.get = (req, res) => {
       options.until = req.query.until;
     }
 
+    // Override latitude/longitude data by uncommenting:
+    // options.latitude = {{latitude you want}}
+    // options.longitude = {{longitude you want}}
     const es = new EventSearch();
     es.search(options)
       .then((events) => {
@@ -39,7 +42,7 @@ exports.get = (req, res) => {
           centre,
         };
         const eventArray = events.events.map((element) => {
-          console.log(events.events);
+          // console.log(events.events);
           const geocode = {
             lat: element.venue.location.latitude,
             lng: element.venue.location.longitude,
@@ -51,11 +54,11 @@ exports.get = (req, res) => {
             start: element.startTime,
             end: element.endTime,
           }
+          console.log(event);
           const eventInfo = `<h2><a href="${event.link}" target="_blank">${event.name}</a></h2><p>${event.venue}`;
           return { geocode, eventInfo };
         });
         responseObject.eventArray = eventArray;
-        // console.log('eventArray', eventArray);
 
         res.json(responseObject);
       })
