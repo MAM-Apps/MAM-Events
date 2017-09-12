@@ -35,8 +35,8 @@ function initMap() {
       map.panTo(responseObject.centre);
       responseObject.eventArray.forEach(function(el) {
         addMarker({
-          coords: el[0],
-          content: el[1],
+          coords: el.geocode,
+          content: el.eventInfo,
         });
       });
     });

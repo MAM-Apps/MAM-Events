@@ -39,21 +39,23 @@ exports.get = (req, res) => {
           centre,
         };
         const eventArray = events.events.map((element) => {
-          console.log(element.name);
-          const event = {
-            name: element.name,
-            venue: element.venue.name,
-            link: `https://www.facebook.com/events/${element.id}`
-          }
+          console.log(events.events);
           const geocode = {
             lat: element.venue.location.latitude,
             lng: element.venue.location.longitude,
           };
-          const eventInfoWindow = `<h2><a href="${event.link}">${event.name}</a></h2><p>${event.venue}`;
-          return [geocode, eventInfoWindow];
+          const event = {
+            name: element.name,
+            venue: element.venue.name,
+            link: `https://www.facebook.com/events/${element.id}`,
+            start: element.startTime,
+            end: element.endTime,
+          }
+          const eventInfo = `<h2><a href="${event.link}" target="_blank">${event.name}</a></h2><p>${event.venue}`;
+          return { geocode, eventInfo };
         });
         responseObject.eventArray = eventArray;
-        console.log('eventArray', eventArray);
+        // console.log('eventArray', eventArray);
 
         res.json(responseObject);
       })
