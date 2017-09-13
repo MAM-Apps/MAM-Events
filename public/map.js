@@ -1,6 +1,6 @@
 /* eslint-disable */
 var form = document.getElementById('map-form');
-
+var customDate = document.getElementById('date');
 function myLocation(controlDiv, map) {
 
   // Set CSS for the control border.
@@ -175,15 +175,20 @@ function initMap() {
       var latCenter = center.lat();
       var lngCenter = center.lng();
       var timeMethod = e.target.id;
-      console.log(timeMethod)
 
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
       var locationData = {
         latCenter: latCenter,
         lngCenter: lngCenter,
         radius: radius,
-          timeMethod: timeMethod
+        timeMethod: timeMethod
       };
+
+      if (timeMethod === 'custom-date') {
+        locationData.date = date.value;
+        console.log(date.value);
+      }
+
       xhrRequest(locationData, function(response) {
         var responseObject = JSON.parse(response);
         // console.log(responseObject);
