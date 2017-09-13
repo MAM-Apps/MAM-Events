@@ -160,14 +160,15 @@ function initMap() {
         lng: bounds.b.f,
       };
       center = map.getCenter();
-      console.log('Center Lat : ', center.lat());
-      console.log('Center Lng: ', center.lng());
+      console.log('Center Lat : ', center.lat(), 'Center Lng: ', center.lng());
+      console.log('sw Lat : ', southWest.lat, 'sw Lng: ', southWest.lng);
       //map.getCentre()
       //find displacements
     });
     var buttons = document.getElementById('buttons');
     buttons.addEventListener('click', function(e) {
-
+        e.preventDefault();
+        rmvMarker();
       var bounds = map.getBounds()
       var center = map.getCenter();
       var latSW = bounds.f.b;
@@ -177,14 +178,18 @@ function initMap() {
       var timeMethod = e.target.id;
       console.log(timeMethod)
 
+
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
+      console.log('radius is' + radius)
       var locationData = {
         latCenter: latCenter,
         lngCenter: lngCenter,
         radius: radius,
           timeMethod: timeMethod
       };
+      console.log('Location data outside',locationData)
       xhrRequest(locationData, function(response) {
+          console.log('Location data inside',locationData)
         var responseObject = JSON.parse(response);
         // console.log(responseObject);
         // map.setZoom(10);
@@ -193,6 +198,7 @@ function initMap() {
           lng: Number(responseObject.centre.lng),
         }
         map.panTo(centre);
+        console.log(responseObject);
         console.log(responseObject.eventArray[0].geocode);
         responseObject.eventArray.forEach(function(el) {
           // console.log(el.geocode);
@@ -247,8 +253,12 @@ function initMap() {
 
       });
     }
+      function latLngToRadius(fromLat, fromLng, toLat, toLng) { // generally used geo measurement function
+          return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(fromLat, fromLng), new google.maps.LatLng(toLat, toLng));
+      } // CalculateDistance
+      console.log(latLngToRadius(87, 40, -30, 25));
 
-    // function to remove marker
+      // function to remove marker
     function rmvMarker() {
 
       markClust.forEach(function(el) {

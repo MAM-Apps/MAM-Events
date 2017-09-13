@@ -15,10 +15,11 @@ var xhrRequest = function(options, cb) {
   // } else {
     // var url = '/events/?input=search&address=' + address.value + "&until=" + timestamp + '&distance=' + distance.value;
   // }
-  // console.log(url);
+  console.log(url);
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log(xhr.responseText)
       cb(xhr.responseText);
     }
   };

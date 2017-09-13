@@ -6,14 +6,16 @@ const EventSearch = require('facebook-events-by-location-core');
 const getTimeStamp = require('./timeButtons.js')
 
 exports.get = (req, res) => {
-  console.log(req.query.input);
+  console.log('query is', req.query);
   if (req.query.input === 'geo') {
     const options = fillOptions(req.query);
     options.until = getTimeStamp(req.query.timemethod);
     console.log(options.until);
+    console.log('distance', options.distance)
     const es = new EventSearch();
     es.search(options)
       .then((events) => {
+      console.log('options are', options);
         const responseObject = {};
         const eventArray = events.events.map((element) => {
           // console.log(events.events);

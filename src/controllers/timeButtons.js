@@ -1,5 +1,7 @@
 module.exports = (timeMethod) => {
-    const now = Date.now();
+
+    let timeOffset = (new Date()).getTimezoneOffset() * 60000;
+    let now = new Date(Date.now()-timeOffset);
     const endTime = 'T23:59:59.999Z';
 
   if (timeMethod === 'today'){
