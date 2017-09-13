@@ -7,5 +7,6 @@ function latlngToRadius(lat1, lon1, lat2, lon2) { // generally used geo measurem
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = earthRad * c;
-  return d * 1000; // meters
+  return d ; // meters
 }
+console.log(latlngToRadius(87,40,-30,25));

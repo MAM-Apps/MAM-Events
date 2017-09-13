@@ -59,119 +59,168 @@ function myLocation(controlDiv, map) {
 
 function initMap() {
     // Map options - this is passed to the new google maps as a variable
-    var mapOptions = {
-        // Zoom goes up to 16 - this it the closest we can zoom
-        zoom: 14,
-        // Centred at FAC
-        center: {
-            lat: 51.530881,
-            lng: -0.042137,
-        },
-    };
-    // Create an array to store all markers so they can be clustered
-    var markClust = [];
+    var mapOptions = function(callback){
+        if (navigator.geolocation) {
 
-    // Create new google map and send to DOM
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var opts = {
+                    zoom: 14,
+                    center:{
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    }
 
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new myLocation(centerControlDiv, map);
+                    };
+                callback(opts)
 
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
-
-    // Create new Market Clusterer object, passing in markCLust array
-    var markerCluster = new MarkerClusterer(
-        map, markClust, {
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-        },
-    );
-
-
-
-    // Listen for click on map
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      rmvMarker();
-      xhrRequest(function(response) {
-        var responseObject = JSON.parse(response);
-        // console.log(responseObject);
-        map.setZoom(10);
-        var centre = {
-          lat: Number(responseObject.centre.lat),
-          lng: Number(responseObject.centre.lng),
-        }
-        map.panTo(centre);
-        console.log(responseObject.eventArray[0].geocode);
-        responseObject.eventArray.forEach(function(el) {
-                  // console.log(el.geocode);
-          addMarker({
-            coords: el.geocode,
-            content: el.eventInfo,
-          });
-        });
-      });
-    });
-
-    // Add Marker Function
-    // This creates the marker. This function will be called by the add marker event listener
-    // props is the event properties
-    function addMarker(props) {
-        var content = 'placeholder';
-        var marker = new google.maps.Marker({
-            // get the event's coordinates (on click)
-            position: props.coords,
-            // this is a key value pair identifying the map in use
-            map,
-            // icon:props.iconImage
-        });
-
-        // Check for customicon
-        if (props.iconImage) {
-            // Set icon image
-            marker.setIcon(props.iconImage);
-        }
-        // adds marker to the cluster - updates the rest
-        // this addmarker belongs to markerclusterer class
-        markerCluster.addMarker(marker);
-        markClust.push(marker);
-        // Check content
-        if (props.content) {
-            var infoWindow = new google.maps.InfoWindow({
-                // populate this with event information
-
-                content: props.content,
             });
-            // Add info window
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-        }
-        // addlistener to remove the marker
-        // Not needed for MVP
-        google.maps.event.addListener(marker, 'dblclick', (event) => {
-            console.log('You just double clicked');
 
-        });
+
+        }else{
+            var opts = {
+                // Zoom goes up to 16 - this it the closest we can zoom
+                zoom: 14,
+                // Centred at FAC
+                center: {
+                    lat: 51.530881,
+                    lng: -0.042137,
+                },
+            }
+            callback(opts)
+        }
+
+
     }
 
-    // function to remove marker
-    function rmvMarker() {
+    var createMap = function(mapOption){
 
-        markClust.forEach(function(el) {
-            el.setMap(null)
-        })
-        markerCluster.clearMarkers();
-        markClust = [];
-    }
-    // Check to see if the bound have changed and to retrieve new bounds
-    google.maps.event.addListener(map, 'bounds_changed', () => {
-        var bounds = map.getBounds();
-        console.log(bounds);
-        //map.getCentre()
-        //find displacements
-    });
+            // Create an array to store all markers so they can be clustered
+            var markClust = [];
+
+            // Create new google map and send to DOM
+            var map = new google.maps.Map(document.getElementById('map'), mapOption);
+
+            var centerControlDiv = document.createElement('div');
+            var centerControl = new myLocation(centerControlDiv, map);
+
+            centerControlDiv.index = 1;
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+
+            // Create infowindow
+            var OMSInfoWindow = new google.maps.InfoWindow();
+
+            // Create OverlappingMarkerSpiderfier instsance
+            var oms = new OverlappingMarkerSpiderfier(map,
+                {markersWontMove: true, markersWontHide: true, circleFootSeparation:40});
+
+            // This is necessary to make the Spiderfy work
+            oms.addListener('click', function(marker) {
+                OMSInfoWindow.setContent(marker.desc);
+                //OMSInfoWindow.open(map, marker);
+            });
+            // Create new Market Clusterer object, passing in markCLust array
+            var markerCluster = new MarkerClusterer(
+                map, markClust, {
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+                    maxZoom:16
+                },
+            );
+
+
+
+            // Listen for click on map
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                rmvMarker();
+                xhrRequest(function(response) {
+                    var responseObject = JSON.parse(response);
+                    // console.log(responseObject);
+                    map.setZoom(10);
+                    var centre = {
+                        lat: Number(responseObject.centre.lat),
+                        lng: Number(responseObject.centre.lng),
+                    }
+                    map.panTo(centre);
+                    console.log(responseObject.eventArray[0].geocode);
+                    responseObject.eventArray.forEach(function(el) {
+                        // console.log(el.geocode);
+                        addMarker({
+                            coords: el.geocode,
+                            content: el.eventInfo,
+                        });
+                    });
+                });
+            });
+
+            // Add Marker Function
+            // This creates the marker. This function will be called by the add marker event listener
+            // props is the event properties
+            function addMarker(props) {
+                var content = 'placeholder';
+                var marker = new google.maps.Marker({
+                    // get the event's coordinates (on click)
+                    position: props.coords,
+                    // this is a key value pair identifying the map in use
+                    map,
+                    // icon:props.iconImage
+                });
+
+                // Check for customicon
+                if (props.iconImage) {
+                    // Set icon image
+                    marker.setIcon(props.iconImage);
+                }
+                // adds marker to the cluster - updates the rest
+                // this addmarker belongs to markerclusterer class
+                oms.addMarker(marker);
+                markerCluster.addMarker(marker);
+                markClust.push(marker);
+                // Check content
+                if (props.content) {
+                    var infoWindow = new google.maps.InfoWindow({
+                        // populate this with event information
+
+                        content: props.content,
+                    });
+                    // Add info window
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                }
+                // addlistener to remove the marker
+                // Not needed for MVP
+                google.maps.event.addListener(marker, 'dblclick', (event) => {
+                    console.log('You just double clicked');
+
+                });
+            }
+
+            // function to remove marker
+            function rmvMarker() {
+
+                markClust.forEach(function(el) {
+                    el.setMap(null)
+                })
+                markerCluster.clearMarkers();
+                markClust = [];
+            }
+            // Check to see if the bound have changed and to retrieve new bounds
+            google.maps.event.addListener(map, 'bounds_changed', () => {
+                var bounds = map.getBounds();
+                console.log(bounds);
+                var center = map.getCenter();
+                console.log(center.lat())
+                //map.getCentre()
+                //find displacements
+            });
+
+        }
+
+        ;
+    mapOptions(createMap);
+
 }
+
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
