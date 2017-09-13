@@ -141,7 +141,8 @@ function initMap() {
         var latLng = {
           lat: aPlace.geometry.location.lat(),
           lng: aPlace.geometry.location.lng(),
-        }
+        };
+        map.setCenter(latLng);
     });
     // Listen for click on map
     form.addEventListener('submit', function(e) {
