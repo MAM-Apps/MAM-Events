@@ -68,7 +68,8 @@ function initMap() {
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          }
+          },
+          mapTypeControl: false,
 
         };
         callback(opts)
@@ -85,6 +86,7 @@ function initMap() {
           lat: 51.530881,
           lng: -0.042137,
         },
+        mapTypeControl: false,
       }
       callback(opts)
     }
