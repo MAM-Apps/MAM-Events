@@ -8,10 +8,10 @@ var distance = document.getElementById('distance');
 
 var distance = document.getElementById('distance');
 var xhrRequest = function(options, cb) {
-  var dateTime = new Date(until.value).getTime();
-  var timestamp = Math.floor(dateTime / 1000);
+  //var dateTime = new Date(until.value).getTime();
+  //var timestamp = Math.floor(dateTime / 1000);
   // if (lat.value && lng.value) {
-    var url = '/events/?' + '&input=geo&lat=' + options.latCenter + '&lng=' + options.lngCenter + '&distance=' + options.radius + '&until=' + timestamp;
+    var url = '/events/?' + 'input=geo&lat=' + options.latCenter + '&lng=' + options.lngCenter + '&distance=' + options.radius + '&timemethod=' + options.timeMethod;
   // } else {
     // var url = '/events/?input=search&address=' + address.value + "&until=" + timestamp + '&distance=' + distance.value;
   // }

@@ -9,3 +9,38 @@ img{
     background-color: white;
     border-bottom-color: black;
 }
+
+body{
+    background-color: #252830 ;
+    color: aliceblue;
+    width: 80% ;
+    margin: auto;
+    text-align: center;
+}
+.green{
+    background-color: #B5E0C3
+}
+
+.pink{
+    background-color: #F7D7F7;
+}
+
+.yellow{
+    background-color: #FFFDDC ;
+}
+
+.orange{
+    background-color: #FADFC9;
+}
+
+.time-buttons{
+    display: inline-block;;
+    height:100px;
+    width: 100px;
+    border: none;
+}
+
+.buttons{
+    margin: auto;
+
+}

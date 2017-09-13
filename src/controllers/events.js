@@ -3,26 +3,14 @@ require('env2')('./config.env');
 const url = require('url');
 const EventSearch = require('facebook-events-by-location-core');
 
+const getTimeStamp = require('./timeButtons.js')
+
 exports.get = (req, res) => {
   console.log(req.query.input);
   if (req.query.input === 'geo') {
-    
-    // if (!req.query.lat || !req.query.lng) {
-    //   res.status(500).json({
-    //     message: 'Please specify the lat and lng parameters!',
-    //   });
-    // } else if (!req.query.accessToken && !process.env.FEBL_ACCESS_TOKEN) {
-    //   res.status(500).json({
-    //     message: 'Please specify an Access Token, either as environment variable or as accessToken parameter!',
-    //   });
-    // } else {
     const options = fillOptions(req.query);
-    if (req.query.lat) {
-      options.lat = req.query.lat;
-    }
-    if (req.query.lng) {
-      options.lng = req.query.lng;
-    }
+    options.until = getTimeStamp(req.query.timemethod);
+    console.log(options.until);
     const es = new EventSearch();
     es.search(options)
       .then((events) => {
@@ -58,59 +46,17 @@ exports.get = (req, res) => {
         res.status(500).json(error);
         console.log('');
       });
-  } else {
-    request(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.query.address}&key=${process.env.MAPS_API_KEY}`, (error, response, body) => {
-      let options = fillOptions(req.query);
-      options.centre = JSON.parse(body).results[0].geometry.location;
-      options.lat = options.centre.lat;
-      options.lng = options.centre.lng;
-      
-      // Override latitude/longitude data by uncommenting:
-      // options.latitude = {{latitude you want}}
-      // options.longitude = {{longitude you want}}
-      const es = new EventSearch();
-      es.search(options)
-        .then((events) => {
-          let responseObject = {
-            centre: options.centre,
-          };
-          console.log(responseObject);
-          const eventArray = events.events.map((element) => {
-            // console.log(events.events);
-            const geocode = {
-              lat: element.venue.location.latitude,
-              lng: element.venue.location.longitude,
-            };
-            console.log(geocode);
-            const event = {
-              name: element.name,
-              venue: element.venue.name,
-              link: `https://www.facebook.com/events/${element.id}`,
-              start: element.startTime,
-              end: element.endTime,
-            };
-            // console.log(event);
-            const eventInfo = `<h2><a href="${event.link}" target="_blank">${event.name}</a></h2><p>${event.venue}`;
-            return {
-              geocode,
-              eventInfo,
-            };
-          });
-          responseObject.eventArray = eventArray;
-          // console.log(eventArray);
-          res.json(responseObject);
-        })
-        .catch((err) => {
-          res.status(500).json(err);
-          console.log('');
-        });
-    });
   }
 };
 
 const fillOptions = (query) => {
   let options = {};
-
+  if (query.lat) {
+        options.lat = query.lat;
+    }
+    if (query.lng) {
+        options.lng = query.lng;
+    }
   if (query.distance) {
     options.distance = query.distance;
   }

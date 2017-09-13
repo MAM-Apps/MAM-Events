@@ -165,7 +165,8 @@ function initMap() {
       //map.getCentre()
       //find displacements
     });
-    go.addEventListener('click', function(e) {
+    var buttons = document.getElementById('buttons');
+    buttons.addEventListener('click', function(e) {
 
       var bounds = map.getBounds()
       var center = map.getCenter();
@@ -173,17 +174,20 @@ function initMap() {
       var lngSW = bounds.b.b;
       var latCenter = center.lat();
       var lngCenter = center.lng();
+      var timeMethod = e.target.id;
+      console.log(timeMethod)
 
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
       var locationData = {
         latCenter: latCenter,
         lngCenter: lngCenter,
         radius: radius,
+          timeMethod: timeMethod
       };
       xhrRequest(locationData, function(response) {
         var responseObject = JSON.parse(response);
         // console.log(responseObject);
-        map.setZoom(10);
+        // map.setZoom(10);
         var centre = {
           lat: Number(responseObject.centre.lat),
           lng: Number(responseObject.centre.lng),
@@ -200,29 +204,6 @@ function initMap() {
       });
     });
 
-    // Listen for click on map
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      rmvMarker();
-      xhrRequest({}, function(response) {
-        var responseObject = JSON.parse(response);
-        // console.log(responseObject);
-        map.setZoom(10);
-        var centre = {
-          lat: Number(responseObject.centre.lat),
-          lng: Number(responseObject.centre.lng),
-        }
-        map.panTo(centre);
-        console.log(responseObject.eventArray[0].geocode);
-        responseObject.eventArray.forEach(function(el) {
-          // console.log(el.geocode);
-          addMarker({
-            coords: el.geocode,
-            content: el.eventInfo,
-          });
-        });
-      });
-    });
 
     // Add Marker Function
     // This creates the marker. This function will be called by the add marker event listener
