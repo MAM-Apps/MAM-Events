@@ -23,6 +23,7 @@
     "mongoose": "^4.11.10",
     "node": "^8.3.0",
     "nodemon": "^1.12.0",
+    "overlapping-marker-spiderfier": "^1.1.4",
     "serve-favicon": "^2.4.3",
     "supertest": "^3.0.0",
     "tap-spec": "^4.1.1",
