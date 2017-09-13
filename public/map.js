@@ -126,7 +126,13 @@ function initMap() {
                 },
             );
 
-
+          // Create autocomplete search bar
+              var acInput = document.createElement('input');
+              var acOptions = {};
+              acInput.setAttribute('type', 'text');
+              acInput.setAttribute('placeholder', 'Find a place...');
+              var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
+              map.controls[google.maps.ControlPosition.TOP_LEFT].push(acInput);
 
             // Listen for click on map
             form.addEventListener('submit', function(e) {
