@@ -138,6 +138,7 @@ function initMap() {
     go.id = "go-button";
     var acOptions = {};
     acInput.id = 'ac-input';
+    acInput.className = 'ac';
     acInput.setAttribute('type', 'text');
     acInput.setAttribute('placeholder', 'Find a place...');
     var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
