@@ -19,8 +19,11 @@ body{
     font-family: 'Julius Sans One', sans-serif;;
 }
 
-h1{
-    font-size: 54px;
+h1 {
+    font-size: calc(2.5rem + 5vw);
+    min-width: 500px;
+    margin: 2rem auto auto;
+
 }
 .green{
     background-color: #B5E0C3
@@ -38,6 +41,11 @@ h1{
     background-color: #FADFC9;
 }
 
+.red{
+    background-color: #DA3E52;
+    color: white;
+}
+
 .time-buttons{
     display: inline-block;
     height:100px;
@@ -49,9 +57,7 @@ h1{
     margin: 2em auto;
 }
 
-.yellow {
 
-}
 
 .ac {
   font-size: 1.5em;
@@ -62,57 +68,64 @@ h1{
 
 .main {
   max-width: 756px;
+    min-width: 500px;
   margin: auto;
   text-align: center;
+    visibility: hidden;
 }
 
-/* Custom Date Flip Animation */
+/* entire container, keeps perspective */
 .flip-container {
-	perspective: 1000px;
+    perspective: 1000px;
+    display: inline-block;
+    vertical-align: bottom;
 }
-	/* flip the pane when hovered */
-	.flip-container:hover .flipper, .flip-container.hover .flipper {
-		transform: rotateY(180deg);
-	}
+/* flip the pane when hovered */
+.flipper-click {
+    transform: rotateY(180deg);
+}
+
+.flipper-click {
+    transform: rotateY(-180deg);
+}
 
 .flip-container, .front, .back {
-	width: 100px;
-	height: 100px;
-  display: inline-block;
+    width: 100px;
+    height: 100px;
 }
 
 /* flip speed goes here */
 .flipper {
-	transition: 0.6s;
-	transform-style: preserve-3d;
+    transition: 0.6s;
+    transform-style: preserve-3d;
 
-	position: relative;
+    position: relative;
 }
 
 /* hide back of pane during swap */
 .front, .back {
-	backface-visibility: hidden;
+    backface-visibility: hidden;
 
-	position: absolute;
-	top: 0;
-	left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* front pane, placed above back */
 .front {
-	z-index: 2;
-	/* for firefox 31 */
-	transform: rotateY(0deg);
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
 }
 
 /* back, initially hidden pane */
 .back {
-	transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 /*spinner*/
 div#loader{
-    background-color: #4b4e6d;
+    background-color: #252830;
     height: 100%;
     width:100%;
     z-index: 10 ;
@@ -198,3 +211,14 @@ p{
 
 }
 
+.hidden{
+    visibility: hidden;
+}
+
+.visible{
+    visibility: visible;
+}
+
+footer{
+    min-width: 500px;
+}

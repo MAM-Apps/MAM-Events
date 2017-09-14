@@ -10,7 +10,7 @@ var distance = document.getElementById('distance');
 var xhrRequest = function(options, cb) {
     var url = '/events/?' + 'input=geo&lat=' + options.latCenter + '&lng=' + options.lngCenter + '&distance=' + options.radius + '&timemethod=' + options.timeMethod;
 
-    if (options.timeMethod === 'custom-date') {
+    if (options.timeMethod === 'custom-go') {
       url += '&date=' + options.date;
     }
 

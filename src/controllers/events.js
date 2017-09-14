@@ -14,7 +14,7 @@ exports.get = (req, res) => {
     if (req.query.date) {
       options.until = getTimeStamp(req.query.timemethod, req.query.date);
     }
-    console.log('UNTIL: ', options.until);
+    console.log('OPTIONS BEFORE SEARCH: ', options);
 
     const es = new EventSearch();
     es.search(options)
