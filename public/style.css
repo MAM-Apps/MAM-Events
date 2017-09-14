@@ -19,8 +19,11 @@ body{
     font-family: 'Julius Sans One', sans-serif;;
 }
 
-h1{
-    font-size: 54px;
+h1 {
+    font-size: calc(2.5rem + 5vw);
+    min-width: 500px;
+    margin: 2rem auto auto;
+
 }
 .green{
     background-color: #B5E0C3
@@ -65,8 +68,10 @@ h1{
 
 .main {
   max-width: 756px;
+    min-width: 500px;
   margin: auto;
   text-align: center;
+    visibility: hidden;
 }
 
 /* entire container, keeps perspective */
@@ -120,7 +125,7 @@ h1{
 
 /*spinner*/
 div#loader{
-    background-color: #4b4e6d;
+    background-color: #252830;
     height: 100%;
     width:100%;
     z-index: 10 ;
@@ -210,3 +215,10 @@ p{
     visibility: hidden;
 }
 
+.visible{
+    visibility: visible;
+}
+
+footer{
+    min-width: 500px;
+}

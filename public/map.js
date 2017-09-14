@@ -43,7 +43,7 @@ function myLocation(controlDiv, map) {
 
         infoWindow2.setPosition(pos);
         infoWindow2.setContent('<p style="color:black">You\'re here</p>');
-        infoWindow2.se
+
         infoWindow2.open(map);
         map.setCenter(pos);
       }, function() {
@@ -109,7 +109,9 @@ function initMap() {
           console.log('success')
           var load_screen = document.getElementById("loader");
           //load_screen.classList.add("loader-fade")
-          loader.remove()
+          load_screen.remove()
+          document.getElementById("main").style.visibility = "visible";
+
       });
 
     var centerControlDiv = document.createElement('div');
@@ -165,8 +167,6 @@ function initMap() {
       var aPlace = autocomplete.getPlace();
         mapError.innerText ="";
       if(aPlace.geometry===undefined){
-
-
           mapError.innerText = 'Not a valid place!'
       }else{
 
