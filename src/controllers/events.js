@@ -10,8 +10,12 @@ exports.get = (req, res) => {
   if (req.query.input === 'geo') {
     const options = fillOptions(req.query);
     options.until = getTimeStamp(req.query.timemethod);
-    console.log(options.until);
-    console.log('distance', options.distance);
+
+    if (req.query.date) {
+      options.until = getTimeStamp(req.query.timemethod, req.query.date);
+    }
+    console.log('UNTIL: ', options.until);
+
     const es = new EventSearch();
     es.search(options)
       .then((events) => {

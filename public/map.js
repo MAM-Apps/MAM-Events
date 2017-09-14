@@ -1,6 +1,6 @@
 /* eslint-disable */
 var form = document.getElementById('map-form');
-
+var customDate = document.getElementById('date');
 function myLocation(controlDiv, map) {
 
   // Set CSS for the control border.
@@ -68,7 +68,8 @@ function initMap() {
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          }
+          },
+          mapTypeControl: false,
 
         };
         callback(opts)
@@ -85,6 +86,7 @@ function initMap() {
           lat: 51.530881,
           lng: -0.042137,
         },
+        mapTypeControl: false,
       }
       callback(opts)
     }
@@ -141,6 +143,7 @@ function initMap() {
 
     var acOptions = {};
     acInput.id = 'ac-input';
+    acInput.className = 'ac';
     acInput.setAttribute('type', 'text');
     acInput.setAttribute('placeholder', 'Find a place...');
     var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
@@ -182,7 +185,6 @@ function initMap() {
       var latCenter = center.lat();
       var lngCenter = center.lng();
       var timeMethod = e.target.id;
-      console.log(timeMethod)
 
 
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
@@ -191,9 +193,15 @@ function initMap() {
         latCenter: latCenter,
         lngCenter: lngCenter,
         radius: radius,
-          timeMethod: timeMethod
+        timeMethod: timeMethod
       };
-      console.log('Location data outside',locationData)
+
+
+      if (timeMethod === 'custom-date') {
+        locationData.date = date.value;
+        console.log(date.value);
+      }
+
       xhrRequest(locationData, function(response) {
           console.log('Location data inside',locationData)
         var responseObject = JSON.parse(response);
@@ -214,6 +222,7 @@ function initMap() {
                     content: el.eventInfo,
                 });
             });
+            map.setZoom(15);
         }
         //console.log(responseObject.eventArray[0].geocode);
 
