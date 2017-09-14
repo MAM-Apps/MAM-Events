@@ -18,6 +18,7 @@ var xhrRequest = function(options, cb) {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       console.log(xhr.responseText)
+        document.getElementById("map-load").style.visibility = "hidden";
       cb(xhr.responseText);
     }
   };

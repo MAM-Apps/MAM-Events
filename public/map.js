@@ -111,8 +111,10 @@ function initMap() {
 
     var centerControlDiv = document.createElement('div');
     var centerControl = new myLocation(centerControlDiv, map);
+      var mapError = document.getElementById('map-error');
 
-    centerControlDiv.index = 1;
+
+      centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
 
     // Create infowindow
@@ -141,7 +143,7 @@ function initMap() {
     var markerCluster = new MarkerClusterer(
       map, markClust, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-        maxZoom: 17
+        maxZoom: 15
       },
     );
 
@@ -158,12 +160,19 @@ function initMap() {
 
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var aPlace = autocomplete.getPlace();
-      var latLng = {
-        lat: aPlace.geometry.location.lat(),
-        lng: aPlace.geometry.location.lng(),
-      };
-      map.setCenter(latLng);
-      map.setZoom(16)
+        mapError.innerText =""
+      if(aPlace.geometry===undefined){
+          mapError.innerText = 'Not a valid place!'
+      }else{
+
+          var latLng = {
+              lat: aPlace.geometry.location.lat(),
+              lng: aPlace.geometry.location.lng(),
+          };
+          map.setCenter(latLng);
+          map.setZoom(16)
+      }
+
     });
     google.maps.event.addListener(map, 'bounds_changed', () => {
       bounds = map.getBounds();
@@ -184,7 +193,6 @@ function initMap() {
     var buttons = document.getElementById('buttons');
     buttons.addEventListener('click', function(e) {
         e.preventDefault();
-        rmvMarker();
       var bounds = map.getBounds()
       var center = map.getCenter();
       var latSW = bounds.f.b;
@@ -192,8 +200,10 @@ function initMap() {
       var latCenter = center.lat();
       var lngCenter = center.lng();
       var timeMethod = e.target.id;
+      mapError.innerHTML="";
 
-
+        document.getElementById("map-load").style.visibility = "visible";
+        rmvMarker();
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
       console.log('radius is' + radius)
       var locationData = {
@@ -221,15 +231,18 @@ function initMap() {
         map.panTo(centre);
         if(responseObject.eventArray===undefined || responseObject.eventArray.length === 0){
           console.log('no results')
+
+          mapError.innerText = 'No results found.'
         }else{
             responseObject.eventArray.forEach(function(el) {
-                // console.log(el.geocode);
+
                 addMarker({
                     coords: el.geocode,
                     content: el.eventInfo,
+                    //icon: icon
                 });
             });
-            map.setZoom(15);
+            map.setZoom(14);
         }
         //console.log(responseObject.eventArray[0].geocode);
 
@@ -252,7 +265,7 @@ function initMap() {
       });
 
       // Check for customicon
-      if (props.iconImage) {
+      if (props.icon) {
         // Set icon image
         marker.setIcon(props.iconImage);
       }
@@ -273,12 +286,7 @@ function initMap() {
           infoWindow.open(map, marker);
         });
       }
-      // addlistener to remove the marker
-      // Not needed for MVP
-      google.maps.event.addListener(marker, 'dblclick', (event) => {
-        console.log('You just double clicked');
 
-      });
     }
       function latLngToRadius(fromLat, fromLng, toLat, toLng) { // generally used geo measurement function
           return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(fromLat, fromLng), new google.maps.LatLng(toLat, toLng));
