@@ -9,3 +9,98 @@ img{
     background-color: white;
     border-bottom-color: black;
 }
+
+body{
+    background-color: #252830 ;
+    color: aliceblue;
+    width: 80% ;
+    margin: auto;
+    text-align: center;
+}
+.green{
+    background-color: #B5E0C3
+}
+
+.pink{
+    background-color: #F7D7F7;
+}
+
+.yellow{
+    background-color: #FFFDDC ;
+}
+
+.orange{
+    background-color: #FADFC9;
+}
+
+.time-buttons{
+    display: inline-block;
+    height:100px;
+    width: 100px;
+    border: none;
+}
+
+.buttons {
+    margin: 2em auto;
+}
+
+.yellow {
+
+}
+
+.ac {
+  font-size: 2em;
+  border: 2px #132F6B solid;
+  margin: 0.8em 0 0 0.8em;
+  padding: 0.2em;
+}
+
+.main {
+  max-width: 756px;
+  margin: auto;
+  text-align: center;
+}
+
+/* Custom Date Flip Animation */
+.flip-container {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 100px;
+	height: 100px;
+  display: inline-block;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}

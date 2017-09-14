@@ -7,15 +7,11 @@ var until = document.getElementById('until');
 var distance = document.getElementById('distance');
 
 var distance = document.getElementById('distance');
-var xhrRequest = function(cb) {
-  var dateTime = new Date(until.value).getTime();
-  var timestamp = Math.floor(dateTime / 1000);
-  if (lat.value && lng.value) {
-    var url = '/events/?' + '&input=geo&lat=' + lat.value + '&lng=' + lng.value + '&distance=' + distance.value + '&until=' + timestamp;
-  } else {
-    var url = '/events/?&input=search&address=' + address.value + "&until=" + timestamp + '&distance=' + distance.value;
-  }
-  // console.log(url);
+var xhrRequest = function(options, cb) {
+    var url = '/events/?' + 'input=geo&lat=' + options.latCenter + '&lng=' + options.lngCenter + '&distance=' + options.radius + '&timemethod=' + options.timeMethod;
+    if (options.timeMethod === 'custom-date') {
+      url += '&date=' + options.date;
+    }
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {

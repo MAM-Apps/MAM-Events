@@ -1,6 +1,6 @@
 /* eslint-disable */
 var form = document.getElementById('map-form');
-
+var customDate = document.getElementById('date');
 function myLocation(controlDiv, map) {
 
   // Set CSS for the control border.
@@ -68,7 +68,8 @@ function initMap() {
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          }
+          },
+          mapTypeControl: false,
 
         };
         callback(opts)
@@ -85,6 +86,7 @@ function initMap() {
           lat: 51.530881,
           lng: -0.042137,
         },
+        mapTypeControl: false,
       }
       callback(opts)
     }
@@ -131,26 +133,69 @@ function initMap() {
 
     // Create autocomplete search bar
     var acInput = document.createElement('input');
+    var go = document.createElement('button');
+    go.textContent = "GO!";
+    go.id = "go-button";
     var acOptions = {};
+    acInput.id = 'ac-input';
+    acInput.className = 'ac';
     acInput.setAttribute('type', 'text');
     acInput.setAttribute('placeholder', 'Find a place...');
     var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(acInput);
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(go);
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var aPlace = autocomplete.getPlace();
-        var latLng = {
-          lat: aPlace.geometry.location.lat(),
-          lng: aPlace.geometry.location.lng(),
-        }
+      var latLng = {
+        lat: aPlace.geometry.location.lat(),
+        lng: aPlace.geometry.location.lng(),
+      };
+      map.setCenter(latLng);
     });
-    // Listen for click on map
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      rmvMarker();
-      xhrRequest(function(response) {
+    google.maps.event.addListener(map, 'bounds_changed', () => {
+      bounds = map.getBounds();
+      var southWest= {
+        lat: bounds.f.b,
+        lng: bounds.b.b,
+      };
+      var northEast = {
+        lat: bounds.f.f,
+        lng: bounds.b.f,
+      };
+      center = map.getCenter();
+      console.log('Center Lat : ', center.lat());
+      console.log('Center Lng: ', center.lng());
+      //map.getCentre()
+      //find displacements
+    });
+    var buttons = document.getElementById('buttons');
+    buttons.addEventListener('click', function(e) {
+
+      var bounds = map.getBounds()
+      var center = map.getCenter();
+      var latSW = bounds.f.b;
+      var lngSW = bounds.b.b;
+      var latCenter = center.lat();
+      var lngCenter = center.lng();
+      var timeMethod = e.target.id;
+
+      var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
+      var locationData = {
+        latCenter: latCenter,
+        lngCenter: lngCenter,
+        radius: radius,
+        timeMethod: timeMethod
+      };
+
+      if (timeMethod === 'custom-date') {
+        locationData.date = date.value;
+        console.log(date.value);
+      }
+
+      xhrRequest(locationData, function(response) {
         var responseObject = JSON.parse(response);
         // console.log(responseObject);
-        map.setZoom(10);
+        // map.setZoom(10);
         var centre = {
           lat: Number(responseObject.centre.lat),
           lng: Number(responseObject.centre.lng),
@@ -166,6 +211,7 @@ function initMap() {
         });
       });
     });
+
 
     // Add Marker Function
     // This creates the marker. This function will be called by the add marker event listener
@@ -220,18 +266,8 @@ function initMap() {
       markClust = [];
     }
     // Check to see if the bound have changed and to retrieve new bounds
-    google.maps.event.addListener(map, 'bounds_changed', () => {
-      var bounds = map.getBounds();
-      console.log(bounds);
-      var center = map.getCenter();
-      console.log(center.lat())
-      //map.getCentre()
-      //find displacements
-    });
 
-  }
-
-  ;
+  };
   mapOptions(createMap);
 
 }
