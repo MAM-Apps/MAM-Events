@@ -64,7 +64,7 @@ function initMap() {
 
       navigator.geolocation.getCurrentPosition(function(position) {
         var opts = {
-          zoom: 14,
+          zoom: 15,
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude
@@ -79,7 +79,7 @@ function initMap() {
     } else {
       var opts = {
         // Zoom goes up to 16 - this it the closest we can zoom
-        zoom: 14,
+        zoom: 15,
         // Centred at FAC
         center: {
           lat: 51.530881,
@@ -113,19 +113,26 @@ function initMap() {
     var oms = new OverlappingMarkerSpiderfier(map, {
       markersWontMove: true,
       markersWontHide: true,
-      circleFootSeparation: 40
+      circleFootSeparation: 70
     });
 
     // This is necessary to make the Spiderfy work
     oms.addListener('click', function(marker) {
       OMSInfoWindow.setContent(marker.desc);
       //OMSInfoWindow.open(map, marker);
+        oms.keepSpiderfied = true;
     });
+
+      oms.addListener('dblclick', function(marker) {
+          OMSInfoWindow.setContent(marker.desc);
+          //OMSInfoWindow.open(map, marker);
+          oms.keepSpiderfied = false;
+      });
     // Create new Market Clusterer object, passing in markCLust array
     var markerCluster = new MarkerClusterer(
       map, markClust, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-        maxZoom: 16
+        maxZoom: 17
       },
     );
 
@@ -148,6 +155,7 @@ function initMap() {
         lng: aPlace.geometry.location.lng(),
       };
       map.setCenter(latLng);
+      map.setZoom(16)
     });
     google.maps.event.addListener(map, 'bounds_changed', () => {
       bounds = map.getBounds();
@@ -198,15 +206,20 @@ function initMap() {
           lng: Number(responseObject.centre.lng),
         }
         map.panTo(centre);
-        console.log(responseObject);
-        console.log(responseObject.eventArray[0].geocode);
-        responseObject.eventArray.forEach(function(el) {
-          // console.log(el.geocode);
-          addMarker({
-            coords: el.geocode,
-            content: el.eventInfo,
-          });
-        });
+        if(responseObject.eventArray===undefined || responseObject.eventArray.length === 0){
+          console.log('no results')
+        }else{
+            responseObject.eventArray.forEach(function(el) {
+                // console.log(el.geocode);
+                addMarker({
+                    coords: el.geocode,
+                    content: el.eventInfo,
+                });
+            });
+        }
+        //console.log(responseObject.eventArray[0].geocode);
+
+
       });
     });
 
