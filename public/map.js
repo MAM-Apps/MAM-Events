@@ -143,7 +143,7 @@ function initMap() {
     var markerCluster = new MarkerClusterer(
       map, markClust, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-        maxZoom: 15
+        maxZoom: 14
       },
     );
 
