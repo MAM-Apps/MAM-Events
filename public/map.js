@@ -1,6 +1,7 @@
 /* eslint-disable */
 var form = document.getElementById('map-form');
-var customDate = document.getElementById('date');
+var customDate = document.getElementById('custom-date');
+var customGo = document.getElementById('custom-go');
 function myLocation(controlDiv, map) {
 
   // Set CSS for the control border.
@@ -160,7 +161,7 @@ function initMap() {
 
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var aPlace = autocomplete.getPlace();
-        mapError.innerText =""
+        mapError.innerText ="";
       if(aPlace.geometry===undefined){
           mapError.innerText = 'Not a valid place!'
       }else{
@@ -190,6 +191,22 @@ function initMap() {
       //map.getCentre()
       //find displacements
     });
+
+    customDate.addEventListener('click', function (e) {
+        document.getElementById("date-input").style.visibility = "visible";
+        var flipper = document.getElementById('flipper');
+        flipper.classList.toggle("flipper-click");
+        flipper.classList.toggle("flipper-click-reverse");
+    });
+
+      customGo.addEventListener('click', function (e) {
+          document.getElementById("date-input").style.visibility = "visible";
+          var flipper = document.getElementById('flipper');
+          flipper.classList.toggle("flipper-click");
+          flipper.classList.toggle("flipper-click-reverse");
+      });
+
+
     var buttons = document.getElementById('buttons');
     buttons.addEventListener('click', function(e) {
         e.preventDefault();
@@ -199,13 +216,13 @@ function initMap() {
       var lngSW = bounds.b.b;
       var latCenter = center.lat();
       var lngCenter = center.lng();
+      var lngCenter = center.lng();
       var timeMethod = e.target.id;
-      mapError.innerHTML="";
+      mapError.textContent="";
 
-        document.getElementById("map-load").style.visibility = "visible";
         rmvMarker();
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
-      console.log('radius is' + radius)
+      console.log('radius is' + radius);
       var locationData = {
         latCenter: latCenter,
         lngCenter: lngCenter,
@@ -215,39 +232,52 @@ function initMap() {
 
 
       if (timeMethod === 'custom-date') {
-        locationData.date = date.value;
-        console.log(date.value);
+
+
+
+          document.getElementById("date-input").style.visibility = "visible";
+
+          var dateCheck =  new Date(date.value);
+          console.log('Date Cehck', dateCheck);
+          locationData.date = date.value;
+          console.log(date.value);
+
+      }else{
+          document.getElementById("map-load").style.visibility = "visible";
+          updateMap();
       }
+        function updateMap(){
+            xhrRequest(locationData, function(response) {
+                console.log('Location data inside',locationData)
+                var responseObject = JSON.parse(response);
+                // console.log(responseObject);
+                // map.setZoom(10);
+                var centre = {
+                    lat: Number(responseObject.centre.lat),
+                    lng: Number(responseObject.centre.lng),
+                }
+                map.panTo(centre);
+                if(responseObject.eventArray===undefined || responseObject.eventArray.length === 0){
+                    console.log('no results')
 
-      xhrRequest(locationData, function(response) {
-          console.log('Location data inside',locationData)
-        var responseObject = JSON.parse(response);
-        // console.log(responseObject);
-        // map.setZoom(10);
-        var centre = {
-          lat: Number(responseObject.centre.lat),
-          lng: Number(responseObject.centre.lng),
-        }
-        map.panTo(centre);
-        if(responseObject.eventArray===undefined || responseObject.eventArray.length === 0){
-          console.log('no results')
+                    mapError.innerText = 'No results found.'
+                }else{
+                    responseObject.eventArray.forEach(function(el) {
 
-          mapError.innerText = 'No results found.'
-        }else{
-            responseObject.eventArray.forEach(function(el) {
+                        addMarker({
+                            coords: el.geocode,
+                            content: el.eventInfo,
+                            //icon: icon
+                        });
+                    });
+                    map.setZoom(14);
+                }
+            })};
 
-                addMarker({
-                    coords: el.geocode,
-                    content: el.eventInfo,
-                    //icon: icon
-                });
-            });
-            map.setZoom(14);
-        }
         //console.log(responseObject.eventArray[0].geocode);
 
 
-      });
+
     });
 
 
@@ -265,7 +295,7 @@ function initMap() {
       });
 
       // Check for customicon
-      if (props.icon) {
+      if (props.iconImage) {
         // Set icon image
         marker.setIcon(props.iconImage);
       }
@@ -288,6 +318,7 @@ function initMap() {
       }
 
     }
+
       function latLngToRadius(fromLat, fromLng, toLat, toLng) { // generally used geo measurement function
           return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(fromLat, fromLng), new google.maps.LatLng(toLat, toLng));
       } // CalculateDistance
