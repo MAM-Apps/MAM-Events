@@ -108,11 +108,37 @@ function initMap() {
       google.maps.event.addListenerOnce(map, 'idle', function(){
           console.log('success')
           var load_screen = document.getElementById("loader");
-          //load_screen.classList.add("loader-fade")
-          load_screen.remove()
-          document.getElementById("main").style.visibility = "visible";
+          var bigSpinner = document.getElementById('big-spinner');
+          var readyButton = document.createElement("button");
+          var readyDiv = document.getElementById("ready");
+          var header = document.getElementById('header');
+          var readyContent = document.createTextNode('X');
+          var instructionsDiv = document.getElementById('instructions');
+          var title = document.getElementById('title');
+          setTimeout(function() {
+              instructionsDiv.classList.toggle('no-display');
+          }, 600);
+          bigSpinner.classList.toggle('spinner-fade');
+          readyButton.textContent = 'X';
+          readyDiv.appendChild(readyButton);
+          readyButton.classList.add('ready-button');
+          readyButton.addEventListener('click', function(e) {
+              header.appendChild(title);
+              setTimeout(function() {
+                  load_screen.remove();
+              }, 2100);
+              load_screen.classList.add("fade-loader");
+              // load_screen.remove();
+              main.style.visibility = "visible";
+
+
+
+
+          });
+
 
       });
+
 
     var centerControlDiv = document.createElement('div');
     var centerControl = new myLocation(centerControlDiv, map);

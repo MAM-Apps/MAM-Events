@@ -12,7 +12,7 @@ img{
 
 body{
     background-color: #252830 ;
-    color: aliceblue;
+
     /*width: 80% ;*/
     margin: auto;
     text-align: center;
@@ -23,7 +23,8 @@ h1 {
     font-size: calc(2.5rem + 5vw);
     min-width: 500px;
     margin: 2rem auto auto;
-
+    color: aliceblue;
+    /*height: 10%;*/
 }
 .green{
     background-color: #B5E0C3
@@ -135,8 +136,6 @@ div#loader{
 
 }
 .spinner {
-
-
     position: relative;
     display: inline-block;
 
@@ -215,10 +214,93 @@ p{
     visibility: hidden;
 }
 
+.no-display {
+    display: none;
+
+}
+
 .visible{
     visibility: visible;
 }
 
 footer{
     min-width: 500px;
+}
+
+#info-button{
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    vertical-align: middle;
+}
+
+#loader{
+    transition: 2s;
+}
+
+.withfadeout {
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -ms-transition: all 2s ease-in-out;
+    -o-transition: all 2s ease-in-out;
+    transition: all 2s ease-in-out;
+}
+
+.fade-loader {
+    width:200px;
+    height: 200px;
+    background: red;
+    -webkit-animation: fadeinout 2s linear forwards;
+    animation: fadeinout 2s linear forwards;
+}
+
+@-webkit-keyframes fadeinout {
+    0%{ opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes fadeinout {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.ready-button {
+    border-radius: 100%;
+    background-color: red;
+    height: 50px;
+    width: 50px;
+    color: white;
+    border: none;
+}
+.ready {
+    display: inline-block;
+}
+
+.spinner-fade{
+    -webkit-animation: fadeinout 0.5s linear forwards;
+    animation: fadeinout 0.5s linear forwards;
+}
+
+.instructions-text {
+    text-align: center;
+    line-height: 2;
+}
+
+.instructions {
+    width: 60vw;
+    margin: auto;
+    color: aliceblue;
+}
+
+.instructions-heading {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#big-spinner {
+    z-index: -1;
+}
+
+h2,p,h1,footer{
+    color: aliceblue;
 }
