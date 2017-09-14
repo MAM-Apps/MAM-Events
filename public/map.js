@@ -2,6 +2,7 @@
 var form = document.getElementById('map-form');
 var customDate = document.getElementById('custom-date');
 var customGo = document.getElementById('custom-go');
+var date = document.getElementById('date')
 function myLocation(controlDiv, map) {
 
   // Set CSS for the control border.
@@ -41,7 +42,8 @@ function myLocation(controlDiv, map) {
         };
 
         infoWindow2.setPosition(pos);
-        infoWindow2.setContent('Location found.');
+        infoWindow2.setContent('<p style="color:black">You\'re here</p>');
+        infoWindow2.se
         infoWindow2.open(map);
         map.setCenter(pos);
       }, function() {
@@ -163,6 +165,8 @@ function initMap() {
       var aPlace = autocomplete.getPlace();
         mapError.innerText ="";
       if(aPlace.geometry===undefined){
+
+
           mapError.innerText = 'Not a valid place!'
       }else{
 
@@ -199,12 +203,6 @@ function initMap() {
         flipper.classList.toggle("flipper-click-reverse");
     });
 
-      customGo.addEventListener('click', function (e) {
-          document.getElementById("date-input").style.visibility = "visible";
-          var flipper = document.getElementById('flipper');
-          flipper.classList.toggle("flipper-click");
-          flipper.classList.toggle("flipper-click-reverse");
-      });
 
 
     var buttons = document.getElementById('buttons');
@@ -218,6 +216,7 @@ function initMap() {
       var lngCenter = center.lng();
       var lngCenter = center.lng();
       var timeMethod = e.target.id;
+      console.log(e.target.id);
       mapError.textContent="";
 
         rmvMarker();
@@ -229,18 +228,25 @@ function initMap() {
         radius: radius,
         timeMethod: timeMethod
       };
-
-
-      if (timeMethod === 'custom-date') {
-
-
-
-          document.getElementById("date-input").style.visibility = "visible";
+      console.log(timeMethod )
+      if (timeMethod === 'custom-date'|| timeMethod === 'buttons'){
+        return;
+      }else if (timeMethod === 'custom-go') {
 
           var dateCheck =  new Date(date.value);
-          console.log('Date Cehck', dateCheck);
-          locationData.date = date.value;
           console.log(date.value);
+          if (date.value){
+              document.getElementById("date-input").style.visibility = "hidden";
+              var flipper = document.getElementById('flipper');
+              flipper.classList.toggle("flipper-click");
+              flipper.classList.toggle("flipper-click-reverse");
+              locationData.date = date.value;
+              document.getElementById("map-load").style.visibility = "visible";
+              updateMap();
+          } else{
+              mapError.innerText = 'Not a valid date!'
+          }
+
 
       }else{
           document.getElementById("map-load").style.visibility = "visible";
