@@ -122,14 +122,35 @@ div#loader{
 
 }
 .spinner {
-    width: 200px;
-    height: 200px;
+
 
     position: relative;
-    margin: 100px auto;
+    display: inline-block;
+
 
 }
+#loader .spinner {
+    width: 300px;
+    height: 300px;
+    margin: 100px auto;
 
+
+}
+#map-load{
+    visibility: hidden;
+}
+#map-load .spinner {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+
+
+
+}
+p{
+    display: inline-block;
+
+}
 .double-bounce1, .double-bounce2 {
     width: 100%;
     height: 100%;
@@ -139,6 +160,7 @@ div#loader{
     position: absolute;
     top: 0;
     left: 0;
+    display: inline-block;
 
     -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
     animation: sk-bounce 2.0s infinite ease-in-out;
@@ -175,3 +197,4 @@ div#loader{
     -webkit-animation-fill-mode: forwards;
 
 }
+
