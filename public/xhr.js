@@ -9,12 +9,15 @@ var distance = document.getElementById('distance');
 var distance = document.getElementById('distance');
 var xhrRequest = function(options, cb) {
     var url = '/events/?' + 'input=geo&lat=' + options.latCenter + '&lng=' + options.lngCenter + '&distance=' + options.radius + '&timemethod=' + options.timeMethod;
+
     if (options.timeMethod === 'custom-date') {
       url += '&date=' + options.date;
     }
+
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log(xhr.responseText)
       cb(xhr.responseText);
     }
   };

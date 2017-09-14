@@ -3,20 +3,23 @@ require('env2')('./config.env');
 const url = require('url');
 const EventSearch = require('facebook-events-by-location-core');
 
-const getTimeStamp = require('./timeButtons.js')
+const getTimeStamp = require('./timeButtons.js');
 
 exports.get = (req, res) => {
-  console.log(req.query.input);
+  console.log('query is', req.query);
   if (req.query.input === 'geo') {
     const options = fillOptions(req.query);
     options.until = getTimeStamp(req.query.timemethod);
+
     if (req.query.date) {
       options.until = getTimeStamp(req.query.timemethod, req.query.date);
     }
     console.log('UNTIL: ', options.until);
+
     const es = new EventSearch();
     es.search(options)
       .then((events) => {
+        console.log('options are', options);
         const responseObject = {};
         const eventArray = events.events.map((element) => {
           // console.log(events.events);
@@ -53,13 +56,13 @@ exports.get = (req, res) => {
 };
 
 const fillOptions = (query) => {
-  let options = {};
+  const options = {};
   if (query.lat) {
-        options.lat = query.lat;
-    }
-    if (query.lng) {
-        options.lng = query.lng;
-    }
+    options.lat = query.lat;
+  }
+  if (query.lng) {
+    options.lng = query.lng;
+  }
   if (query.distance) {
     options.distance = query.distance;
   }

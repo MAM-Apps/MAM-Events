@@ -1,3 +1,4 @@
+
 /* eslint-disable */
 const getDaysInMonth = (date) => {
   let daysInMonth = 0;
@@ -66,8 +67,12 @@ const getNewDate = (date, daysToAdd, cb) => {
   return newDate;
 };
 
+
 module.exports = (timeMethod, date) => {
-  const [nowDate, nowTime] = new Date(Date.now()).toISOString().split('T');
+    const timeOffset = (new Date()).getTimezoneOffset() * 60000;
+
+  const [nowDate, nowTime] = new Date(Date.now()-timeOffset).toISOString().split('T');
+  console.log(nowDate);
   const endTime = 'T23:59:59.999Z';
   if (timeMethod === 'today') {
     const today = nowDate.concat(endTime);

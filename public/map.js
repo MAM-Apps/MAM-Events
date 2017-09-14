@@ -64,7 +64,7 @@ function initMap() {
 
       navigator.geolocation.getCurrentPosition(function(position) {
         var opts = {
-          zoom: 14,
+          zoom: 15,
           center: {
             lat: position.coords.latitude,
             lng: position.coords.longitude
@@ -80,7 +80,7 @@ function initMap() {
     } else {
       var opts = {
         // Zoom goes up to 16 - this it the closest we can zoom
-        zoom: 14,
+        zoom: 15,
         // Centred at FAC
         center: {
           lat: 51.530881,
@@ -102,6 +102,13 @@ function initMap() {
     // Create new google map and send to DOM
     var map = new google.maps.Map(document.getElementById('map'), mapOption);
 
+      google.maps.event.addListenerOnce(map, 'idle', function(){
+          console.log('success')
+          var load_screen = document.getElementById("loader");
+          //load_screen.classList.add("loader-fade")
+          loader.remove()
+      });
+
     var centerControlDiv = document.createElement('div');
     var centerControl = new myLocation(centerControlDiv, map);
 
@@ -115,27 +122,32 @@ function initMap() {
     var oms = new OverlappingMarkerSpiderfier(map, {
       markersWontMove: true,
       markersWontHide: true,
-      circleFootSeparation: 40
+      circleFootSeparation: 70
     });
 
     // This is necessary to make the Spiderfy work
     oms.addListener('click', function(marker) {
       OMSInfoWindow.setContent(marker.desc);
       //OMSInfoWindow.open(map, marker);
+        oms.keepSpiderfied = true;
     });
+
+      oms.addListener('dblclick', function(marker) {
+          OMSInfoWindow.setContent(marker.desc);
+          //OMSInfoWindow.open(map, marker);
+          oms.keepSpiderfied = false;
+      });
     // Create new Market Clusterer object, passing in markCLust array
     var markerCluster = new MarkerClusterer(
       map, markClust, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-        maxZoom: 16
+        maxZoom: 17
       },
     );
 
     // Create autocomplete search bar
     var acInput = document.createElement('input');
-    var go = document.createElement('button');
-    go.textContent = "GO!";
-    go.id = "go-button";
+
     var acOptions = {};
     acInput.id = 'ac-input';
     acInput.className = 'ac';
@@ -143,7 +155,7 @@ function initMap() {
     acInput.setAttribute('placeholder', 'Find a place...');
     var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(acInput);
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(go);
+
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var aPlace = autocomplete.getPlace();
       var latLng = {
@@ -151,6 +163,7 @@ function initMap() {
         lng: aPlace.geometry.location.lng(),
       };
       map.setCenter(latLng);
+      map.setZoom(16)
     });
     google.maps.event.addListener(map, 'bounds_changed', () => {
       bounds = map.getBounds();
@@ -163,14 +176,15 @@ function initMap() {
         lng: bounds.b.f,
       };
       center = map.getCenter();
-      console.log('Center Lat : ', center.lat());
-      console.log('Center Lng: ', center.lng());
+      console.log('Center Lat : ', center.lat(), 'Center Lng: ', center.lng());
+      console.log('sw Lat : ', southWest.lat, 'sw Lng: ', southWest.lng);
       //map.getCentre()
       //find displacements
     });
     var buttons = document.getElementById('buttons');
     buttons.addEventListener('click', function(e) {
-
+        e.preventDefault();
+        rmvMarker();
       var bounds = map.getBounds()
       var center = map.getCenter();
       var latSW = bounds.f.b;
@@ -179,7 +193,9 @@ function initMap() {
       var lngCenter = center.lng();
       var timeMethod = e.target.id;
 
+
       var radius = latLngToRadius(latSW, lngSW, latCenter, lngCenter);
+      console.log('radius is' + radius)
       var locationData = {
         latCenter: latCenter,
         lngCenter: lngCenter,
@@ -187,12 +203,14 @@ function initMap() {
         timeMethod: timeMethod
       };
 
+
       if (timeMethod === 'custom-date') {
         locationData.date = date.value;
         console.log(date.value);
       }
 
       xhrRequest(locationData, function(response) {
+          console.log('Location data inside',locationData)
         var responseObject = JSON.parse(response);
         // console.log(responseObject);
         // map.setZoom(10);
@@ -201,14 +219,21 @@ function initMap() {
           lng: Number(responseObject.centre.lng),
         }
         map.panTo(centre);
-        console.log(responseObject.eventArray[0].geocode);
-        responseObject.eventArray.forEach(function(el) {
-          // console.log(el.geocode);
-          addMarker({
-            coords: el.geocode,
-            content: el.eventInfo,
-          });
-        });
+        if(responseObject.eventArray===undefined || responseObject.eventArray.length === 0){
+          console.log('no results')
+        }else{
+            responseObject.eventArray.forEach(function(el) {
+                // console.log(el.geocode);
+                addMarker({
+                    coords: el.geocode,
+                    content: el.eventInfo,
+                });
+            });
+            map.setZoom(15);
+        }
+        //console.log(responseObject.eventArray[0].geocode);
+
+
       });
     });
 
@@ -255,8 +280,12 @@ function initMap() {
 
       });
     }
+      function latLngToRadius(fromLat, fromLng, toLat, toLng) { // generally used geo measurement function
+          return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(fromLat, fromLng), new google.maps.LatLng(toLat, toLng));
+      } // CalculateDistance
+      console.log(latLngToRadius(87, 40, -30, 25));
 
-    // function to remove marker
+      // function to remove marker
     function rmvMarker() {
 
       markClust.forEach(function(el) {

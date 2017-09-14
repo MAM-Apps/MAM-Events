@@ -13,9 +13,14 @@ img{
 body{
     background-color: #252830 ;
     color: aliceblue;
-    width: 80% ;
+    /*width: 80% ;*/
     margin: auto;
     text-align: center;
+    font-family: 'Julius Sans One', sans-serif;;
+}
+
+h1{
+    font-size: 54px;
 }
 .green{
     background-color: #B5E0C3
@@ -49,7 +54,7 @@ body{
 }
 
 .ac {
-  font-size: 2em;
+  font-size: 1.5em;
   border: 2px #132F6B solid;
   margin: 0.8em 0 0 0.8em;
   padding: 0.2em;
@@ -103,4 +108,70 @@ body{
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
+}
+
+/*spinner*/
+div#loader{
+    background-color: #4b4e6d;
+    height: 100%;
+    width:100%;
+    z-index: 10 ;
+    position:fixed;
+    margin: 0 0 0 0 ;
+
+
+}
+.spinner {
+    width: 200px;
+    height: 200px;
+
+    position: relative;
+    margin: 100px auto;
+
+}
+
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+    0%, 100% { -webkit-transform: scale(0.0) }
+    50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+    0%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    } 50% {
+          transform: scale(1.0);
+          -webkit-transform: scale(1.0);
+      }
+}
+
+.loader-fade{
+
+    animation:loader-fade 0.5s 1;
+    -webkit-animation:loader-fade 0.5s 1;
+    animation-fill-mode: forwards;
+
+    animation-delay:2s;
+    -webkit-animation-delay:1s; /* Safari and Chrome */
+    -webkit-animation-fill-mode: forwards;
+
 }
