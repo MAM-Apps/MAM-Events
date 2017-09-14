@@ -138,16 +138,14 @@ function initMap() {
 
     // Create autocomplete search bar
     var acInput = document.createElement('input');
-    var go = document.createElement('button');
-    go.textContent = "GO!";
-    go.id = "go-button";
+
     var acOptions = {};
     acInput.id = 'ac-input';
     acInput.setAttribute('type', 'text');
     acInput.setAttribute('placeholder', 'Find a place...');
     var autocomplete = new google.maps.places.Autocomplete(acInput, acOptions);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(acInput);
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(go);
+
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       var aPlace = autocomplete.getPlace();
       var latLng = {
