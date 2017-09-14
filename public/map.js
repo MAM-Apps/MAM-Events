@@ -102,6 +102,13 @@ function initMap() {
     // Create new google map and send to DOM
     var map = new google.maps.Map(document.getElementById('map'), mapOption);
 
+      google.maps.event.addListenerOnce(map, 'idle', function(){
+          console.log('success')
+          var load_screen = document.getElementById("loader");
+          //load_screen.classList.add("loader-fade")
+          loader.remove()
+      });
+
     var centerControlDiv = document.createElement('div');
     var centerControl = new myLocation(centerControlDiv, map);
 
