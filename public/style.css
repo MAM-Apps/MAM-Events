@@ -301,6 +301,6 @@ footer{
     z-index: -1;
 }
 
-h2,p,h1,footer{
+h2,#map-load p,h1,footer{
     color: aliceblue;
 }
