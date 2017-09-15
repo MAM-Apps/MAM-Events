@@ -32,10 +32,9 @@ Improvements
 * Include info on how to use the site
 * Not getting results on a big radius
 * Change button functionality – The change date not intuitive
-* * Mobile search on map not working 
+* Mobile search on map not working 
 * Map sometimes hard to use with the scale- maybe full width
-* * Mobil
-* e search on map not working 
+* Mobile search on map not working 
 * Map sometimes hard to use with the scale- maybe full width
 
 ## Improvements later
@@ -45,6 +44,7 @@ There were a few improvements we could implement going further:
 * The markers and the info windows needed better styling for better user experience
 * Add features to search for events and proper date ranges rather than from this point.
 * Add personalisation
+* Populate top 10 events in terms of distance and popularity
 
 
 ## Learnings
